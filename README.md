@@ -32,8 +32,8 @@ Follow these steps to set up and run the project locally:
    Create a `.env` file in the project root and add the following:
 
    ```env
-   VITE_API_KEY=your-gemini-api-key
-   VITE_GOOGLE_CLIENT_ID=your-google-client-id
+   VITE_GEMINI_API_KEY = your-gemini-api-key
+   VITE_GOOGLE_CLIENT_ID = your-google-client-id
    ```
 
    Replace `your-gemini-api-key` and `your-google-client-id` with your actual API credentials.
