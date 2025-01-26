@@ -3,6 +3,7 @@ import { googleLogout, useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import { MainContext } from "../context/Provider";
 import { useNavigate } from "react-router-dom";
+import VoiceRecorder from "./VoiceRecord";
 
 const Home = () => {
     const { userProfile, setUserProfile } = useContext(MainContext);
@@ -40,11 +41,11 @@ const Home = () => {
   
 
     return (
-        <div className="min-h-screen bg-gradient-to-r from-black to-neutral-500 flex flex-col justify-center items-center text-center text-white">
+        <div className="min-h-screen bg-gradient-to-r from-black to-neutral-500 flex flex-col justify-center items-center text-center text-white font-serif">
             <div className="max-w-4xl px-6">
-                <h1 className="flex flex-wrap justify-center items-center text-4xl md:text-6xl font-bold mb-6">
+                <h1 className="flex flex-wrap justify-center items-center text-4xl md:text-6xl font-bold mb-6 ">
                     <span>Welcome to</span>
-                    <span className="text-yellow-300 pl-2">Geminaut</span>
+                    <span className="text-blue-400 pl-2">Geminaut</span>
                     <img
                         src="/logo.png" // Replace with Gemini's avatar or suitable image
                         alt="Geminaut Logo"
@@ -56,10 +57,10 @@ const Home = () => {
                     Create an account or log in to start chatting and connect with Geminaut anytime, <br /> anywhere.
                 </p>
                 <div className="flex flex-col md:flex-row justify-center items-center gap-4">
-                    <button onClick={login} className="bg-yellow-300 hover:bg-yellow-400 text-indigo-700 font-semibold py-3 px-8 rounded-full transition shadow-lg focus:outline-none focus:ring-2 focus:ring-yellow-300">
+                    <button onClick={login} className="bg-white hover:bg-neutral-200 text-black font-semibold py-3 px-8 rounded-full transition shadow-lg focus:outline-none focus:ring-2 focus:ring-black">
                         Get Started
                     </button>
-                    <button className="bg-white hover:bg-gray-200 text-indigo-700 font-semibold py-3 px-8 rounded-full transition shadow-lg focus:outline-none focus:ring-2 focus:ring-white">
+                    <button className="bg-black hover:bg-neutral-900 text-white font-semibold py-3 px-8 rounded-full transition shadow-lg focus:outline-none focus:ring-2 focus:ring-white">
                         Learn More
                     </button>
                 </div>

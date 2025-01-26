@@ -19,14 +19,12 @@ function GeminiInReact() {
             setInputValue('')
             const response = result.response;
             const text = response.text();
-            console.log(text)
             setpromptResponses([...promptResponses, text]);
 
             setLoading(false)
         }
         catch (error) {
             console.log(error)
-            console.log("Something Went Wrong");
             setLoading(false)
         }
     }

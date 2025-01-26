@@ -1,28 +1,42 @@
-import React, { useContext, useState } from 'react';
-import { MdDarkMode, MdLightMode, MdOutlineLogout } from 'react-icons/md';
-import { MainContext } from '../context/Provider';
-import { googleLogout } from '@react-oauth/google';
-import { useNavigate } from 'react-router-dom';
+import React, { useContext, useState, useEffect, useRef } from "react";
+import { MdDarkMode, MdLightMode, MdOutlineLogout } from "react-icons/md";
+import { MainContext } from "../context/Provider";
+import { googleLogout } from "@react-oauth/google";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
     const { userProfile, setUserProfile } = useContext(MainContext);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-const navigate = useNavigate()
+    const dropdownRef = useRef(null);
+    const navigate = useNavigate();
 
     const toggleDropdown = () => {
         setIsDropdownOpen((prev) => !prev);
     };
 
     const handleLogout = () => {
-        // Perform logout logic here
-        console.log('User logged out');
-        // log out function to log the user out of google and set the profile array to null
         googleLogout();
-        localStorage.removeItem("access_token")
+        localStorage.removeItem("access_token");
         setUserProfile(null);
-        navigate("/")
+        navigate("/");
     };
 
+    const handleClickOutside = (event) => {
+        if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+            setIsDropdownOpen(false);
+        }
+    };
+
+    useEffect(() => {
+        if (isDropdownOpen) {
+            document.addEventListener("mousedown", handleClickOutside);
+        } else {
+            document.removeEventListener("mousedown", handleClickOutside);
+        }
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [isDropdownOpen]);
 
     return (
         <header className="flex justify-between items-center font-serif bg-black text-white px-6 py-2 shadow-md flex-none relative">
@@ -37,8 +51,8 @@ const navigate = useNavigate()
                 <h1 className="text-xl font-semibold">Geminaut</h1>
             </div>
             <div className="flex items-center gap-3 relative">
-                <MdDarkMode size={35} />
-                <MdLightMode size={35} />
+                <MdDarkMode size={35} className="cursor-pointer" />
+                <MdLightMode size={35} className="cursor-pointer" />
                 <img
                     src={userProfile?.picture || "/user.png"}
                     alt="Profile"
@@ -47,13 +61,16 @@ const navigate = useNavigate()
                     className="rounded-full cursor-pointer"
                     onClick={toggleDropdown}
                 />
-                {isDropdownOpen && (
-                    <div className="absolute top-12 right-0 bg-black text-gray-100 shadow-lg rounded-lg min-w-40 p-4">
-                        <p className='text-base font-semibold'>{userProfile?.name}</p>
-                        <p className='text-sm font-medium text-gray-300'>{userProfile?.email}</p>
+                { isDropdownOpen && (
+                    <div
+                        ref={dropdownRef}
+                        className="absolute top-12 right-0 bg-black text-gray-100 shadow-lg rounded-lg min-w-40 p-4"
+                    >
+                        <p className="text-base font-semibold">{userProfile?.name}</p>
+                        <p className="text-sm font-medium text-gray-300">{userProfile?.email}</p>
                         <button
                             onClick={handleLogout}
-                            className="flex items-center font-semibold gap-2 bg-neutral-900 hover:bg-red-600 ext-base px-3 py-1 rounded-md border border-red-700 mt-2 transition-all duration-300 ease-in-out"
+                            className="flex items-center font-semibold gap-2 bg-neutral-900 hover:bg-red-600 text-base px-3 py-1 rounded-md border border-red-700 mt-2 transition-all duration-300 ease-in-out"
                         >
                             Logout <MdOutlineLogout />
                         </button>
