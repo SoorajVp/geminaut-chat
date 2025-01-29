@@ -50,21 +50,21 @@ const Chat = () => {
 
 
     return (
-        <div className="flex flex-col h-screen bg-gradient-to-b from-neutral-800 to-black">
+        <div className="flex flex-col h-screen bg-gradient-to-b from-neutral-400 to-neutral-200 dark:from-neutral-800 dark:to-black">
             <Header />
             <main className="flex-1 p-2 overflow-y-auto container">
                 {conversation?.length === 0 ? (
                     <div className="flex flex-col justify-center items-center h-full text-center font-serif">
-                        <h1 className="text-4xl font-extrabold text-white">
+                        <h1 className="text-4xl font-extrabold text-neutral-800 dark:text-white">
                             Hello, {userProfile?.given_name}
                         </h1>
-                        <h3 className="text-2xl pt-2 font-semibold text-neutral-300 font-mono" >
+                        <h3 className="text-2xl pt-2 font-semibold text-neutral-700 dark:text-neutral-300 font-mono">
                             What can I help with?
                         </h3>
                     </div>
                 ) : (
                     conversation.map((chat, index) => (
-                        <div className="space-y-2 mt-2" key={index}>
+                        <div className="space-y-2 mt-2 text-xs md:text-sm lg:text-base" key={index}>
                             <div className="flex justify-end">
                                 <div className="bg-neutral-700 shadow-md text-white py-2 px-4 rounded-t-lg rounded-l-lg max-w-md">
                                     {chat.user}
@@ -81,8 +81,8 @@ const Chat = () => {
 
                 <div ref={chatEndRef} /> {/* Reference for auto-scrolling */}
             </main>
-            <footer className="border-t border-gray-700 pb-5 pt-2 flex-none container px-2 shadow-lg">
-                <div className="flex items-end border-2 border-gray-600 bg-neutral-950 rounded-3xl">
+            <footer className="border-t border-gray-400 dark:border-gray-700 pb-5 pt-2 flex-none container px-2">
+                <div className="flex items-end border-2 border-gray-500 bg-neutral-200 dark:bg-neutral-950 rounded-3xl">
                     <textarea
                         placeholder="Type your prompt..."
                         rows={1}
@@ -94,21 +94,21 @@ const Chat = () => {
                                 handleSumbit(); // Call the submit function
                             }
                         }}
-                        className="flex-1 py-2 px-4 resize-none outline-none overflow-hidden bg-neutral-950 text-gray-100 rounded-l-3xl"
+                        className="flex-1 my-auto py-2 px-4 resize-none outline-none overflow-hidden bg-neutral-200 dark:bg-neutral-950 text-gray-900 placeholder:text-neutral-500 dark:text-gray-100 rounded-l-3xl"
                         style={{ maxHeight: '10rem' }}
                     />
 
                     <VoiceRecorder handleSumbit={handleSumbit} setRecordedText={setRecordedText} />
-                    
+
                     {
                         loading ?
-                            <button className="bg-gray-400 border-2 border-gray-900 text-black py-1 m-1 px-2.5 rounded-full"
+                            <button className="bg-neutral-700 dark:bg-neutral-400 border-2 border-neutral-900 text-black py-1 m-1 px-2.5 rounded-full"
                             >
                                 <PiSpinnerGapBold size={30} className="animate-spin" />
                             </button> :
                             <button
                                 onClick={handleSumbit}
-                                className={`${!inputValue.trim() ? "bg-gray-400 cursor-not-allowed" : "bg-gray-200"} hover:bg-gray-400 border-2 border-gray-900 text-black py-1 m-1 pl-3 pr-2 rounded-full shadow-md`}
+                                className={`${!inputValue.trim() ? "bg-neutral-700 dark:bg-neutral-400 cursor-not-allowed" : "bg-neutral-950 dark:bg-neutral-200 hover:bg-neutral-800"}  dark:hover:bg-neutral-400 border-2 border-neutral-900 text-white dark:text-black py-1 m-1 pl-3 pr-2 rounded-full shadow-md`}
                             >
                                 <IoMdSend size={30} />
                             </button>

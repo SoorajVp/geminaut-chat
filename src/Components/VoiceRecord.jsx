@@ -58,30 +58,30 @@ const VoiceRecorder = ({ handleSumbit, setRecordedText }) => {
     };
 
     // Stop recording if the `handleSumbit` prop changes (cleanup)
-    useEffect(() => {
-        if (isRecording && recognitionRef.current) {
-            recognitionRef.current.onresult = (event) => {
-                let transcript = "";
-                for (let i = event.resultIndex; i < event.results.length; i++) {
-                    transcript += event.results[i][0].transcript;
-                }
-                setRecordedText((prev) => prev + " " + transcript);
-            };
-            
-            recognitionRef.current.stop();
-            setIsRecording(false);
-        }
-    }, [handleSumbit]);
+    // useEffect(() => {
+    //     if (isRecording && recognitionRef.current) {
+    //         recognitionRef.current.onresult = (event) => {
+    //             let transcript = "";
+    //             for (let i = event.resultIndex; i < event.results.length; i++) {
+    //                 transcript += event.results[i][0].transcript;
+    //             }
+    //             setRecordedText((prev) => prev + " " + transcript);
+    //         };
+
+    //         recognitionRef.current.stop();
+    //         setIsRecording(false);
+    //     }
+    // }, [handleSumbit]);
 
     return (
         <button
-            className={`${isRecording && "bg-neutral-800"
-                } border-2 border-gray-500 text-white my-1 p-1 rounded-full`}
+            className={`${isRecording ? "bg-neutral-300 dark:bg-neutral-800" : "dark:hover:bg-neutral-800"
+                } border-2  border-gray-500 text-black dark:text-white my-1 p-1 rounded-full`}
             onClick={handleRecording}
         >
             <MdKeyboardVoice
-                size={30}
-                className={isRecording && "animate-pulse text-red-500"}
+                size={30}   
+                className={isRecording && "animate-pulse text-red-600"}
             />
         </button>
     );
