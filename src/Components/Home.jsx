@@ -57,11 +57,11 @@ const Home = () => {
                     Create an account or log in to start chatting and connect with Geminaut anytime, <br /> anywhere.
                 </p>
                 <div className="flex flex-col md:flex-row justify-center items-center gap-4">
-                    <button onClick={login} className="bg-white hover:bg-neutral-200 text-black font-semibold py-3 px-8 rounded-full transition shadow-lg focus:outline-none focus:ring-2 focus:ring-black">
+                    <button onClick={() => navigate("/chat")} className="bg-white hover:bg-neutral-200 text-black font-semibold py-3 px-8 rounded-full transition shadow-lg focus:outline-none focus:ring-2 focus:ring-black">
                         Get Started
                     </button>
-                    <button className="bg-black hover:bg-neutral-900 text-white font-semibold py-3 px-8 rounded-full transition shadow-lg focus:outline-none focus:ring-2 focus:ring-white">
-                        Learn More
+                    <button onClick={login} className="bg-black hover:bg-neutral-900 text-white font-semibold py-3 px-8 rounded-full transition shadow-lg focus:outline-none focus:ring-2 focus:ring-white">
+                        Sign-in with Google
                     </button>
                 </div>
             </div>

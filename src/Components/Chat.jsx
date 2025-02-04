@@ -4,7 +4,6 @@ import Header from './Header';
 import GeminiServiceContent from '../utils/gemini';
 import { MainContext } from '../context/Provider';
 import { PiSpinnerGapBold } from 'react-icons/pi';
-import { MdKeyboardVoice } from 'react-icons/md';
 import VoiceRecorder from './VoiceRecord';
 
 const Chat = () => {
@@ -14,6 +13,7 @@ const Chat = () => {
     const [recordedText, setRecordedText] = useState("");
     const [loading, setLoading] = useState(false);
     const chatEndRef = useRef(null);
+    const [prompt, setPrompt] = useState("")
 
     useEffect(() => {
         setInputValue(recordedText)
@@ -34,12 +34,15 @@ const Chat = () => {
         if (!inputValue.trim()) return; // Ignore empty inputs
         try {
             setLoading(true)
-            const response = await GeminiServiceContent(inputValue);
+            const value = inputValue
+            setPrompt(value)
+            setInputValue('');
+            const response = await GeminiServiceContent(value);
+            console.log('response', response)
             const chat = {
                 user: inputValue,
                 gemini: response,
             };
-            setInputValue('');
             setConversation((prev) => [...prev, chat]);
         } catch (error) {
             console.error('Error:', error);
@@ -50,7 +53,7 @@ const Chat = () => {
 
 
     return (
-        <div className="flex flex-col h-screen bg-gradient-to-b from-neutral-400 to-neutral-200 dark:from-neutral-800 dark:to-black">
+        <div className="flex flex-col h-screen bg-gradient-to-b from-white to-neutral-200 dark:from-neutral-800 dark:to-black">
             <Header />
             <main className="flex-1 p-2 overflow-y-auto container">
                 {conversation?.length === 0 ? (
@@ -66,15 +69,37 @@ const Chat = () => {
                     conversation.map((chat, index) => (
                         <div className="space-y-2 mt-2 text-xs md:text-sm lg:text-base" key={index}>
                             <div className="flex justify-end">
-                                <div className="bg-neutral-700 shadow-md text-white py-2 px-4 rounded-t-lg rounded-l-lg max-w-md">
+                                <div className="bg-neutral-600 dark:bg-neutral-300 shadow-md text-white dark:text-black py-2 px-4 rounded-t-lg rounded-l-lg max-w-md">
                                     {chat.user}
                                 </div>
                             </div>
                             <div className="flex justify-start">
-                                <div className="bg-neutral-300 shadow-md text-black py-2 px-4 rounded-t-lg rounded-r-lg max-w-screen-lg">
+                                <div className="bg-neutral-200 dark:bg-neutral-700 dark:text-white shadow-md text-black py-2 px-4 rounded-t-lg rounded-r-lg max-w-screen-lg">
                                     <div className='prose prose-neutral max-w-none' dangerouslySetInnerHTML={{ __html: chat.gemini }} />
                                 </div>
                             </div>
+                            
+                            {
+                                loading &&
+                                <>
+                                    <div className="flex justify-end">
+                                        <div className="bg-neutral-600 dark:bg-neutral-300 shadow-md text-white dark:text-black py-2 px-4 rounded-t-lg rounded-l-lg max-w-md">
+                                            {prompt}
+                                        </div>
+                                    </div>
+                                    <div className="flex justify-start items-center">
+                                        <img
+                                            src="/logo.png" // Replace with Gemini's avatar or suitable image
+                                            alt="Gemino Logo"
+                                            width={40}
+                                            height={40}
+                                            className="rounded-lg"
+                                        />
+                                        <div className="ml-2 bg-neutral-200 dark:bg-neutral-700 animate-pulse dark:text-white shadow-md text-black h-7 w-full rounded-t-lg rounded-r-lg max-w-screen-md">
+                                        </div>
+                                    </div>
+                                </>
+                            }
                         </div>
                     ))
                 )}
@@ -82,7 +107,7 @@ const Chat = () => {
                 <div ref={chatEndRef} /> {/* Reference for auto-scrolling */}
             </main>
             <footer className="border-t border-gray-400 dark:border-gray-700 pb-5 pt-2 flex-none container px-2">
-                <div className="flex items-end border-2 border-gray-500 bg-neutral-200 dark:bg-neutral-950 rounded-3xl">
+                <div className="flex items-end border-2 border-gray-400 dark:border-gray-700 bg-neutral-200 dark:bg-neutral-950 rounded-3xl">
                     <textarea
                         placeholder="Type your prompt..."
                         rows={1}
@@ -102,7 +127,7 @@ const Chat = () => {
 
                     {
                         loading ?
-                            <button className="bg-neutral-700 dark:bg-neutral-400 border-2 border-neutral-900 text-black py-1 m-1 px-2.5 rounded-full"
+                            <button className="bg-neutral-700 dark:bg-neutral-400 border-2 border-neutral-900 text-white dark:text-black py-1 m-1 px-2.5 rounded-full cursor-not-allowed"
                             >
                                 <PiSpinnerGapBold size={30} className="animate-spin" />
                             </button> :
