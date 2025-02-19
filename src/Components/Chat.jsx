@@ -59,7 +59,7 @@ const Chat = () => {
                 {conversation?.length === 0 ? (
                     <div className="flex flex-col justify-center items-center h-full text-center font-serif">
                         <h1 className="text-4xl font-extrabold text-neutral-800 dark:text-white">
-                            Hello, {userProfile?.given_name}
+                            Hello {userProfile && ", "+ userProfile?.given_name}
                         </h1>
                         <h3 className="text-2xl pt-2 font-semibold text-neutral-700 dark:text-neutral-300 font-mono">
                             What can I help with?
@@ -74,12 +74,12 @@ const Chat = () => {
                                 </div>
                             </div>
                             <div className="flex justify-start">
-                                <div className="bg-neutral-200 dark:bg-neutral-700 dark:text-white shadow-md text-black py-2 px-4 rounded-t-lg rounded-r-lg max-w-screen-lg">
+                                <div className="bg-neutral-200 dark:bg-neutral-700 dark:text-white shadow-md text-black py-2 px-4 md:mr-10 rounded-t-lg rounded-r-lg max-w-screen-lg ">
                                     <div className='prose prose-neutral max-w-none' dangerouslySetInnerHTML={{ __html: chat.gemini }} />
                                 </div>
                             </div>
                             
-                            {
+                            {/* {
                                 loading &&
                                 <>
                                     <div className="flex justify-end">
@@ -95,11 +95,12 @@ const Chat = () => {
                                             height={40}
                                             className="rounded-lg"
                                         />
-                                        <div className="ml-2 bg-neutral-200 dark:bg-neutral-700 animate-pulse dark:text-white shadow-md text-black h-7 w-full rounded-t-lg rounded-r-lg max-w-screen-md">
+                                        <div className="ml-2 px-7 bg-neutral-200 dark:bg-neutral-700 animate-pulse dark:text-white shadow-md text-black h-7 rounded-t-lg rounded-r-lg max-w-screen-md">
+                                            Loading
                                         </div>
                                     </div>
                                 </>
-                            }
+                            } */}
                         </div>
                     ))
                 )}
@@ -119,7 +120,7 @@ const Chat = () => {
                                 handleSumbit(); // Call the submit function
                             }
                         }}
-                        className="flex-1 my-auto py-2 px-4 resize-none outline-none overflow-hidden bg-neutral-200 dark:bg-neutral-950 text-gray-900 placeholder:text-neutral-500 dark:text-gray-100 rounded-l-3xl"
+                        className="flex-1 my-auto py-1.5 px-4 resize-none outline-none overflow-hidden bg-neutral-200 dark:bg-neutral-950 text-gray-900 placeholder:text-neutral-500 dark:text-gray-100 rounded-l-3xl"
                         style={{ maxHeight: '10rem' }}
                     />
 
@@ -129,13 +130,13 @@ const Chat = () => {
                         loading ?
                             <button className="bg-neutral-700 dark:bg-neutral-400 border-2 border-neutral-900 text-white dark:text-black py-1 m-1 px-2.5 rounded-full cursor-not-allowed"
                             >
-                                <PiSpinnerGapBold size={30} className="animate-spin" />
+                                <PiSpinnerGapBold size={28} className="animate-spin" />
                             </button> :
                             <button
                                 onClick={handleSumbit}
-                                className={`${!inputValue.trim() ? "bg-neutral-700 dark:bg-neutral-400 cursor-not-allowed" : "bg-neutral-950 dark:bg-neutral-200 hover:bg-neutral-800"}  dark:hover:bg-neutral-400 border-2 border-neutral-900 text-white dark:text-black py-1 m-1 pl-3 pr-2 rounded-full shadow-md`}
+                                className={`${!inputValue.trim() ? "bg-neutral-700 dark:bg-neutral-400 cursor-not-allowed" : "bg-neutral-950 dark:bg-neutral-200 hover:bg-neutral-800"} dark:hover:bg-neutral-400 border-2 border-neutral-900 text-white dark:text-black py-1 m-1 pl-3 pr-2 rounded-full shadow-md`}
                             >
-                                <IoMdSend size={30} />
+                                <IoMdSend size={28} />
                             </button>
                     }
                 </div>

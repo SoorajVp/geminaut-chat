@@ -3,12 +3,22 @@ import { MdDarkMode, MdLightMode, MdOutlineLogout } from "react-icons/md";
 import { MainContext } from "../context/Provider";
 import { googleLogout } from "@react-oauth/google";
 import { useNavigate } from "react-router-dom";
+import { useGoogleOneTapLogin } from '@react-oauth/google';
 
 const Header = () => {
     const { darkMode, setDarkMode, userProfile, setUserProfile } = useContext(MainContext);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const dropdownRef = useRef(null);
     const navigate = useNavigate();
+
+    useGoogleOneTapLogin({
+        onSuccess: credentialResponse => {
+            console.log(credentialResponse);
+        },
+        onError: () => {
+            console.log('Login Failed');
+        },
+    });
 
     const toggleDropdown = () => {
         setIsDropdownOpen((prev) => !prev);
@@ -44,7 +54,7 @@ const Header = () => {
 
     return (
         <header className="flex justify-between items-center font-serif bg-neutral-200 dark:bg-black text-neutral-950 dark:text-white px-6 py-2 shadow-md flex-none relative">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 cursor-pointer" onClick={() => !userProfile && navigate("/")}>
                 <img
                     src="/logo.png" // Replace with Gemini's avatar or suitable image
                     alt="Gemino Logo"

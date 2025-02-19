@@ -7,14 +7,12 @@ const VoiceRecorder = ({ handleSumbit, setRecordedText }) => {
     const recognitionRef = useRef(null); // Persistent reference for recognition
 
     const handleRecording = () => {
-        // Stop recording if already recording
         if (isRecording && recognitionRef.current) {
-            recognitionRef.current.stop();
-            setIsRecording(false);
+            stopRecording();
             return;
         }
-        setRecordedText("")
-        // Check browser compatibility for Web Speech API
+        setRecordedText("");
+
         if (!("webkitSpeechRecognition" in window || "SpeechRecognition" in window)) {
             setError("Your browser does not support the Web Speech API.");
             return;
@@ -26,62 +24,56 @@ const VoiceRecorder = ({ handleSumbit, setRecordedText }) => {
         const SpeechRecognition =
             window.SpeechRecognition || window.webkitSpeechRecognition;
 
-        // Create a new instance only if one doesn't exist
         if (!recognitionRef.current) {
             recognitionRef.current = new SpeechRecognition();
-            recognitionRef.current.continuous = true;
+            recognitionRef.current.continuous = true; // Stops when user stops speaking
             recognitionRef.current.interimResults = false;
             recognitionRef.current.lang = "en-US";
 
-            // Handle transcription results
             recognitionRef.current.onresult = (event) => {
                 let transcript = "";
                 for (let i = event.resultIndex; i < event.results.length; i++) {
                     transcript += event.results[i][0].transcript;
                 }
-                setRecordedText((prev) => prev + " " + transcript);
+                setRecordedText(transcript.trim());
             };
 
-            // Handle errors
             recognitionRef.current.onerror = (event) => {
                 setError("Error occurred in recognition: " + event.error);
+                stopRecording();
             };
 
-            // Stop recording when recognition ends
             recognitionRef.current.onend = () => {
                 setIsRecording(false);
             };
         }
 
-        // Start recording
         recognitionRef.current.start();
     };
 
-    // Stop recording if the `handleSumbit` prop changes (cleanup)
-    // useEffect(() => {
-    //     if (isRecording && recognitionRef.current) {
-    //         recognitionRef.current.onresult = (event) => {
-    //             let transcript = "";
-    //             for (let i = event.resultIndex; i < event.results.length; i++) {
-    //                 transcript += event.results[i][0].transcript;
-    //             }
-    //             setRecordedText((prev) => prev + " " + transcript);
-    //         };
+    const stopRecording = () => {
+        if (recognitionRef.current) {
+            recognitionRef.current.stop();
+        }
+        setIsRecording(false);
+    };
 
-    //         recognitionRef.current.stop();
-    //         setIsRecording(false);
-    //     }
-    // }, [handleSumbit]);
+    const handleKeyPress = (event) => {
+        if (event.key === "Enter") {
+            handleSumbit();
+        }
+    };
 
     return (
         <button
             className={`${isRecording ? "bg-neutral-300 dark:bg-neutral-800" : "dark:hover:bg-neutral-800"
-                } border-2  border-gray-500 text-black dark:text-white my-1 p-1 rounded-full`}
+                } border-2 border-gray-500 text-black dark:text-white my-1 p-1 rounded-full`}
             onClick={handleRecording}
+            onKeyDown={handleKeyPress}
         >
             <MdKeyboardVoice
-                size={30}   
-                className={isRecording && "animate-pulse text-red-600"}
+                size={28}
+                className={isRecording ? "animate-pulse text-red-600" : ""}
             />
         </button>
     );
