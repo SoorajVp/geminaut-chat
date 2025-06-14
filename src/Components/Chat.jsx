@@ -5,6 +5,7 @@ import GeminiServiceContent from '../utils/gemini';
 import { MainContext } from '../context/Provider';
 import { PiSpinnerGapBold } from 'react-icons/pi';
 import VoiceRecorder from './VoiceRecord';
+import Conversation from './Conversation';
 
 const Chat = () => {
     const { userProfile } = useContext(MainContext);
@@ -22,7 +23,7 @@ const Chat = () => {
     useEffect(() => {
         // Scroll to the bottom of the conversation whenever it updates
         chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-    }, [conversation]);
+    }, [conversation, loading]);
 
     const handleInputChange = (e) => {
         setInputValue(e.target.value);
@@ -67,41 +68,7 @@ const Chat = () => {
                     </div>
                 ) : (
                     conversation.map((chat, index) => (
-                        <div className="space-y-2 mt-2 text-xs md:text-sm lg:text-base" key={index}>
-                            <div className="flex justify-end">
-                                <div className="bg-neutral-600 dark:bg-neutral-300 shadow-md text-white dark:text-black py-2 px-4 rounded-t-lg rounded-l-lg max-w-md">
-                                    {chat.user}
-                                </div>
-                            </div>
-                            <div className="flex justify-start">
-                                <div className="bg-neutral-200 dark:bg-neutral-700 dark:text-white shadow-md text-black py-2 px-4 md:mr-10 rounded-t-lg rounded-r-lg max-w-screen-lg ">
-                                    <div className='prose prose-neutral max-w-none' dangerouslySetInnerHTML={{ __html: chat.gemini }} />
-                                </div>
-                            </div>
-                            
-                            {/* {
-                                loading &&
-                                <>
-                                    <div className="flex justify-end">
-                                        <div className="bg-neutral-600 dark:bg-neutral-300 shadow-md text-white dark:text-black py-2 px-4 rounded-t-lg rounded-l-lg max-w-md">
-                                            {prompt}
-                                        </div>
-                                    </div>
-                                    <div className="flex justify-start items-center">
-                                        <img
-                                            src="/logo.png" // Replace with Gemini's avatar or suitable image
-                                            alt="Gemino Logo"
-                                            width={40}
-                                            height={40}
-                                            className="rounded-lg"
-                                        />
-                                        <div className="ml-2 px-7 bg-neutral-200 dark:bg-neutral-700 animate-pulse dark:text-white shadow-md text-black h-7 rounded-t-lg rounded-r-lg max-w-screen-md">
-                                            Loading
-                                        </div>
-                                    </div>
-                                </>
-                            } */}
-                        </div>
+                        <Conversation chat={chat} loading={loading} prompt={prompt} key={index} />
                     ))
                 )}
 

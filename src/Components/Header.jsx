@@ -4,20 +4,31 @@ import { MainContext } from "../context/Provider";
 import { googleLogout } from "@react-oauth/google";
 import { useNavigate } from "react-router-dom";
 import { useGoogleOneTapLogin } from '@react-oauth/google';
+import axios from "axios";
+import { jwtDecode } from "jwt-decode";
 
 const Header = () => {
-    const { darkMode, setDarkMode, userProfile, setUserProfile } = useContext(MainContext);
+    const { darkMode, setDarkMode, userProfile, setUserProfile, setLoading } = useContext(MainContext);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const dropdownRef = useRef(null);
     const navigate = useNavigate();
+    console.log('userProfile', userProfile)
 
     useGoogleOneTapLogin({
         onSuccess: credentialResponse => {
-            console.log(credentialResponse);
+            setLoading(true)
+            console.log('One Tap login successful:', credentialResponse);
+            const decoded = jwtDecode(credentialResponse.credential);
+            console.log('Decoded JWT:', decoded);
+            setUserProfile(decoded); // Set user info in state
+            setLoading(false)
         },
         onError: () => {
             console.log('Login Failed');
+            setLoading(false)
         },
+        disabled: !!userProfile 
+
     });
 
     const toggleDropdown = () => {
@@ -81,7 +92,7 @@ const Header = () => {
                     userProfile &&
                     <>
                         <img
-                            src={userProfile?.picture || "/user.png"}
+                            src={userProfile?.picture ?? "/user.png"}
                             alt="Profile"
                             width={40}
                             height={40}

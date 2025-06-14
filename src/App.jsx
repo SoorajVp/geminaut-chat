@@ -5,10 +5,11 @@ import { BrowserRouter, Route, Routes, useNavigate } from 'react-router-dom'
 import { useContext, useEffect } from 'react'
 import { MainContext } from './context/Provider'
 import axios from 'axios'
+import Loading from './Components/Loading'
 
 function App() {
 
-  const { darkMode, setUserProfile } = useContext(MainContext);
+  const { darkMode, loading, setUserProfile } = useContext(MainContext);
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -41,6 +42,7 @@ function App() {
 
   return (
     <div className={`${darkMode && 'dark'}`}>
+      {loading && <Loading />}
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/chat' element={<Chat />} />
