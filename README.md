@@ -1,131 +1,61 @@
----
 
-# 🚀 Node.js + Docker Sample Project
+# Geminaut
 
-This is a simple Node.js application running inside a Docker container. The project demonstrates how to containerize a basic Express.js server and run it using Docker.
+Geminaut is a Vite React project that provides an AI chat experience using the Gemini API. Users can sign in via Google and interact with an AI chatbot. The application features light and dark modes and leverages React Context for state management.
 
----
+## Features
 
-## 📁 Project Structure
+- **Google Sign-In:** Secure authentication using Google.
+- **AI Chat:** Engage in friendly conversations with AI powered by the Gemini API.
+- **Light/Dark Mode:** Toggle between light and dark themes for an optimal user experience.
+- **State Management:** Managed using React Context for seamless data flow.
 
-```
-.
-├── server.js
-├── package.json
-├── package-lock.json
-├── Dockerfile
-└── README.md
-```
+## Installation
 
----
+Follow these steps to set up and run the project locally:
 
-## 📦 What This Project Does
+### 1. Clone the Repository
 
-* Runs a simple Express server on port **3000**
-* Responds with `"Hello from Docker + Node.js!"` when accessing the root URL
-* Uses the official **Node.js 18 Alpine** Docker image (lightweight)
-* Installs only production dependencies
-* Demonstrates a minimal but proper Docker workflow
+```bash
+git clone https://github.com/SoorajVp/geminaut-chat.git
+cd geminaut-chat
+````
 
----
+### 2. Install Dependencies
 
-## 🛠️ Requirements
-
-Make sure you have:
-
-* **Node.js** (optional, only needed if you want to run without Docker)
-* **Docker** installed on your machine
-  👉 [https://www.docker.com/get-started](https://www.docker.com/get-started)
-
----
-
-## ▶️ Running the App Without Docker (Optional)
+Using npm:
 
 ```bash
 npm install
-node server.js
 ```
 
-The server will start at:
+### 3. Set Up Environment Variables
 
+Create a `.env` file in the project root and add:
+
+```env
+VITE_GEMINI_API_KEY=your-gemini-api-key
+VITE_GOOGLE_CLIENT_ID=your-google-client-id
 ```
-http://localhost:3000
-```
 
----
+Replace the placeholders with your actual API credentials.
 
-## 🐳 Running the App With Docker
+### 4. Run the Project
 
-### 1️⃣ Build the Docker Image
+Using npm:
 
 ```bash
-docker build -t node-docker-sample .
+npm run dev
 ```
 
-### 2️⃣ Run the Docker Container
+### 5. Access the Application
 
-```bash
-docker run -p 3000:3000 node-docker-sample
-```
-
-Now visit:
+Open your browser and visit:
 
 ```
-http://localhost:3000
+http://localhost:5173
 ```
 
-You should see:
 
+If you want the same formatting style for your **Node.js + Docker README**, I can generate that too.
 ```
-Hello from Docker + Node.js!
-```
-
----
-
-## 📝 Dockerfile Overview
-
-Your Dockerfile consists of:
-
-* Using `node:18-alpine`
-* Setting working directory
-* Installing only production dependencies
-* Copying your application files
-* Exposing port 3000
-* Running `node server.js`
-
----
-
-## 🧹 Cleaning Up Docker Images & Containers (Optional)
-
-List all containers:
-
-```bash
-docker ps -a
-```
-
-Stop a running container:
-
-```bash
-docker stop <container_id>
-```
-
-Remove a container:
-
-```bash
-docker rm <container_id>
-```
-
-Remove the image:
-
-```bash
-docker rmi node-docker-sample
-```
-
----
-
-## 📌 Notes
-
-* This project is a minimal example, perfect for testing Docker with Node.js.
-* Can be extended with routes, middlewares, environment variables, and more.
-
----
