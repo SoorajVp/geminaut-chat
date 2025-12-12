@@ -55,7 +55,3 @@ Open your browser and visit:
 ```
 http://localhost:5173
 ```
-
-
-If you want the same formatting style for your **Node.js + Docker README**, I can generate that too.
-```
